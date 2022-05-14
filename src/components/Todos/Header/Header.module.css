@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Macondo&family=Montserrat:wght@400;500;600&family=Oleo+Script+Swash+Caps:wght@700&family=Orbitron:wght@700&display=swap");
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 30px;
+  line-height: 1;
+
+  font-family: megrim, fantasy;
+  background: #1ca89c;
+  padding: 5px;
+  margin: 0;
+  color: #333;
+  text-align: center;
+}
+
+.numbers {
+  font-family: "Macondo", cursive;
+  font-size: 2.2em;
+
+  text-shadow: 3px 3px 5px #17c691;
+  animation-name: bigNumber;
+  animation-duration: 3000ms;
+  animation-timing-function: linear;
+  animation-delay: 1000ms;
+  animation-iteration-count: infinite;
+  text-decoration: underline;
+}
+
+@keyframes bigNumber {
+  0% {
+  }
+
+  50% {
+    color: rgb(20, 235, 171);
+    text-shadow: 3px 3px 5px #000000;
+  }
+
+  100% {
+  }
+}
