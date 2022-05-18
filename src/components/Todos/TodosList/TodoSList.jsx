@@ -5,8 +5,20 @@ import s from "./TodoSList.module.css";
 import Paper from "../../Paper";
 
 class TodoSList extends Component {
+  static propTypes = {
+    todosArr: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        text: PropTypes.string,
+        completed: PropTypes.bool,
+      })
+    ),
+    onDeleteTodos: PropTypes.func,
+    onToggle: PropTypes.func,
+  };
+
   render() {
-    const { todosArr, onDeleteTodos, onToggle, name } = this.props;
+    const { todosArr, onDeleteTodos, onToggle } = this.props;
 
     return (
       <div className={s.list}>

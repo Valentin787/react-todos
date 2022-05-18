@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Header from "./Header";
 import TodoSList from "./TodosList";
-import TodoFilter from "./TodoFilter/TodoFilter";
-import TodoForm from "./TodoForm/TodoForm";
+import TodoFilter from "./TodoFilter";
+import TodoForm from "./TodoForm";
 var shortid = require("shortid");
 
 class Todos extends Component {

@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import s from "./TodoForm.module.css";
 
 class TodoForm extends Component {
+  static propTypes = {
+    name: PropTypes.string,
+    onAddToDo: PropTypes.func,
+  };
+
   state = {
     text: "",
   };
