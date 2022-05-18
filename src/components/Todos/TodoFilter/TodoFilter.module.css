@@ -1,0 +1,32 @@
+.filter__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  padding: 20px;
+  margin: 0 auto;
+  background: #8bdbd5;
+}
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 28px;
+  font-family: "Pacifico", cursive;
+  line-height: 1.8;
+  letter-spacing: 4px;
+  background: #8bdbd5;
+  cursor: pointer;
+}
+.input {
+  padding: 12px;
+  font-size: 20px;
+  font-family: "Pacifico", cursive;
+  line-height: 1.8;
+  letter-spacing: 4px;
+  border-radius: 10px;
+  border: none;
+  width: 60%;
+  outline: none;
+}
