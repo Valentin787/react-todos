@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Macondo&family=Montserrat:wght@400;500;600&family=Oleo+Script+Swash+Caps:wght@700&family=Orbitron:wght@700&family=Pacifico&display=swap");
+
+.text {
+  margin: 5px 40px;
+  font-family: "Pacifico", cursive;
+  font-size: 32px;
+  line-height: 1.8;
+  letter-spacing: 4px;
+}
+.text__Completed {
+  composes: text;
+  text-decoration: line-through;
+}
+
+.btn {
+  padding: 5px 10px;
+  margin: 5px 40px;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  background: #8bdbd5;
+}
+.checkbox {
+  margin-left: 15px;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+}

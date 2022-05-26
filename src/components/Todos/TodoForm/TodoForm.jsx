@@ -17,12 +17,13 @@ class TodoForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { onAddToDo } = this.props;
+    const { onAddToDo, onCloseAddModal } = this.props;
     const { text } = this.state;
 
     onAddToDo(text);
 
     this.reset();
+    onCloseAddModal();
   };
 
   reset = () => {

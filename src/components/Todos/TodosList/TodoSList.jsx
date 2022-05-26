@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { RiDeleteBack2Line } from "react-icons/ri";
+
 import s from "./TodoSList.module.css";
 import Paper from "../../Paper";
+import Todo from "../Todo";
 
 class TodoSList extends Component {
   static propTypes = {
@@ -11,6 +12,8 @@ class TodoSList extends Component {
         id: PropTypes.string,
         text: PropTypes.string,
         completed: PropTypes.bool,
+        onDeleteTodos: PropTypes.func,
+        onToggle: PropTypes.func,
       })
     ),
     onDeleteTodos: PropTypes.func,
@@ -27,18 +30,12 @@ class TodoSList extends Component {
             return (
               <Paper key={id}>
                 <li className={s.item}>
-                  <input
-                    className={s.checkbox}
-                    type="checkbox"
-                    checked={completed}
-                    onChange={() => onToggle(id)}
+                  <Todo
+                    text={text}
+                    completed={completed}
+                    onToggle={() => onToggle(id)}
+                    onDeleteTodos={() => onDeleteTodos(id)}
                   />
-                  <p className={completed ? s.text__Completed : s.text}>
-                    {text}
-                  </p>
-                  <button className={s.btn} onClick={() => onDeleteTodos(id)}>
-                    <RiDeleteBack2Line fontSize="30px" />
-                  </button>
                 </li>
               </Paper>
             );

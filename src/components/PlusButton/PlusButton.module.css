@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Macondo&family=Montserrat:wght@400;500;600&family=Oleo+Script+Swash+Caps:wght@700&family=Orbitron:wght@700&family=Pacifico&display=swap");
+.wrap {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+.btnPlus {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px;
+  margin-left: 20px;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+.btnPlus:hover,
+.btnPlus:focus {
+  background: #29f4e3;
+  color: rgb(87, 99, 99);
+  border: 2px solid rgb(87, 99, 99);
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+.text {
+  margin: 5px 40px;
+  font-family: "Pacifico", cursive;
+  font-size: 28px;
+  line-height: 1.8;
+  letter-spacing: 4px;
+}

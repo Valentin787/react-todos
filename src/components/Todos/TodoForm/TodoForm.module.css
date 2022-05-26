@@ -1,12 +1,12 @@
 .form {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 800px;
+  width: 500px;
   padding: 20px;
   margin: 0 auto;
   background: #8bdbd5;
-  /* margin-bottom: 100px; */
 }
 .input__newTodo {
   padding: 15px;
@@ -15,8 +15,10 @@
   line-height: 1.8;
   letter-spacing: 4px;
   border-radius: 10px;
+  margin-bottom: 20px;
   border: none;
-  width: 50%;
+  width: 80%;
+  height: 60px;
   outline: none;
 }
 .input__newTodo:focus {
