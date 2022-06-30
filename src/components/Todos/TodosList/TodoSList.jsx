@@ -1,50 +1,87 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import s from "./TodoSList.module.css";
 import Paper from "../../Paper";
 import Todo from "../Todo";
 
-class TodoSList extends Component {
-  static propTypes = {
-    todosArr: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        text: PropTypes.string,
-        completed: PropTypes.bool,
-        onDeleteTodos: PropTypes.func,
-        onToggle: PropTypes.func,
-      })
-    ),
-    onDeleteTodos: PropTypes.func,
-    onToggle: PropTypes.func,
-  };
+const TodoSList = ({ todosArr, onDeleteTodos, onToggle }) => {
+  return (
+    <div className={s.list}>
+      <ul>
+        {todosArr.map(({ id, text, completed }) => {
+          return (
+            <Paper key={id}>
+              <li className={s.item}>
+                <Todo
+                  text={text}
+                  completed={completed}
+                  onToggle={() => onToggle(id)}
+                  onDeleteTodos={() => onDeleteTodos(id)}
+                />
+              </li>
+            </Paper>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
 
-  render() {
-    const { todosArr, onDeleteTodos, onToggle } = this.props;
+TodoSList.propTypes = {
+  todosArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      text: PropTypes.string,
+      completed: PropTypes.bool,
+    })
+  ),
+  onDeleteTodos: PropTypes.func,
+  onToggle: PropTypes.func,
+};
 
-    return (
-      <div className={s.list}>
-        <ul>
-          {todosArr.map(({ id, text, completed }) => {
-            return (
-              <Paper key={id}>
-                <li className={s.item}>
-                  <Todo
-                    text={text}
-                    completed={completed}
-                    onToggle={() => onToggle(id)}
-                    onDeleteTodos={() => onDeleteTodos(id)}
-                  />
-                </li>
-              </Paper>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
-}
+export default TodoSList;
+
+// class TodoSList extends Component {
+//   static propTypes = {
+//     todosArr: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         id: PropTypes.string,
+//         text: PropTypes.string,
+//         completed: PropTypes.bool,
+//         onDeleteTodos: PropTypes.func,
+//         onToggle: PropTypes.func,
+//       })
+//     ),
+//     onDeleteTodos: PropTypes.func,
+//     onToggle: PropTypes.func,
+//   };
+
+//   render() {
+//     const { todosArr, onDeleteTodos, onToggle } = this.props;
+
+//     return (
+//       <div className={s.list}>
+//         <ul>
+//           {todosArr.map(({ id, text, completed }) => {
+//             return (
+//               <Paper key={id}>
+//                 <li className={s.item}>
+//                   <Todo
+//                     text={text}
+//                     completed={completed}
+//                     onToggle={() => onToggle(id)}
+//                     onDeleteTodos={() => onDeleteTodos(id)}
+//                   />
+//                 </li>
+//               </Paper>
+//             );
+//           })}
+//         </ul>
+//       </div>
+//     );
+//   }
+// }
 
 // const TodoSList = ({ todosArr, onDeleteTodos,onToggle,onChange,onSubmit,name }) => {
 //   return (
@@ -99,4 +136,4 @@ class TodoSList extends Component {
 //   onDeleteTodos: PropTypes.func,
 // };
 
-export default TodoSList;
+// export default TodoSList;

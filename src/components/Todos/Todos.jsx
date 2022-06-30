@@ -1,73 +1,111 @@
-import React, { Component } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import PropTypes from "prop-types";
+import * as api from "../../utils/api";
 import Header from "./Header";
 import TodoSList from "./TodosList";
 import TodoFilter from "./TodoFilter";
 import TodoForm from "./TodoForm";
 import Modal from "../Modal";
 import PlusButton from "../PlusButton";
+import { toast } from "react-toastify";
+import HashLoader from "react-spinners/HashLoader";
+import s from "./Todos.module.css";
+
 var shortid = require("shortid");
 
-class Todos extends Component {
-  static propTypes = {
-    todosArr: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        completed: PropTypes.bool.isRequired,
-      })
-    ),
-  };
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "#08f59a",
+};
 
-  state = {
-    todosArr: [],
-    filter: "",
-    isOpenModalAdd: false,
-  };
+const API_ENDPOINT = "todos";
+
+const Todos = () => {
+  const [todosArr, setTodosArr] = useState([]);
+  const [newTodo, setNewTodo] = useState(null);
+  const [deleteID, setDeleteID] = useState("");
+  const [filter, setFilter] = useState("");
+  const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [color, setColor] = useState("#14da8e");
 
   // COMPONENT/DID/MOUNT
-  componentDidMount() {
-    const todos = localStorage.getItem("todos");
-    const parseTodos = JSON.parse(todos);
-    console.log(parseTodos);
-    if (parseTodos) {
-      this.setState({ todosArr: parseTodos });
-    }
-  }
+
+  // useEffect(() => {
+  //   const todos = localStorage.getItem("todos");
+  //   const parseTodos = JSON.parse(todos);
+
+  //   if (parseTodos) {
+  //     setTodosArr(parseTodos);
+  //   }
+  // }, [])
 
   // COMPONENT/DID/UPDATE
 
-  componentDidUpdate(prevProps, prevState) {
-    const { todosArr } = this.state;
+  // useEffect(() => {
+  //   console.log(!todosArr);
+  //   if (!todosArr) return;
 
-    if (prevState.todosArr !== todosArr) {
-      return localStorage.setItem("todos", JSON.stringify(todosArr));
-    }
-  }
+  //   localStorage.setItem("todos", JSON.stringify(todosArr));
+
+  // }, [todosArr])
+
+  useEffect(() => {
+    setError(null);
+
+    const setTransactions = async () => {
+      setLoading(true);
+      try {
+        const todos = await api.getTodo("todos");
+        setTodosArr(todos);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+    setTransactions();
+  }, []);
 
   // ADD TODO
 
-  addTodo = (text) => {
-    const todo = {
-      completed: false,
-      id: `id-${shortid.generate()}`,
-      text: text,
-    };
+  // const confirmTodo = useCallback((todo) => {
+  //  console.log(`useCallback`,todo);
+  //   setNewTodo(todo)
+  // }, []);
+  // console.log(newTodo);
+  const confirmTodo = (todo) => setNewTodo(todo);
 
-    this.setState((prevstate) => ({
-      todosArr: [todo, ...prevstate.todosArr],
-    }));
-  };
+  useEffect(() => {
+    if (!newTodo) return;
+    setLoading(true);
+
+    api
+      .postTodo(API_ENDPOINT, newTodo)
+      .then((item) => {
+        setTodosArr((prevTodos) => [item, ...prevTodos]);
+        toast.success("Завдання успішно збережено в списку 👌 !");
+        toast.info("За работу 👊 !");
+      })
+      .catch((error) => {
+        toast.error("Завдання не додано (: Спробуйте ще раз 🙌");
+        return error.message;
+      })
+      .finally(() => {
+        setNewTodo(null);
+        setLoading(false);
+      });
+  }, [newTodo]);
 
   // OPEN MODAL
-  openAddModal = () => this.setState({ isOpenModalAdd: true });
+  const openAddModal = () => setIsOpenModalAdd(true);
 
   // CLOSE MODAL
-  closeAddModal = () => this.setState({ isOpenModalAdd: false });
+  const closeAddModal = () => setIsOpenModalAdd(false);
 
-  onCompleteTodos = () => {
-    const { todosArr } = this.state;
+  const onCompleteTodos = () => {
     return todosArr.reduce(
       (acc, { completed }) => (completed ? acc + 1 : acc),
       0
@@ -76,70 +114,105 @@ class Todos extends Component {
 
   // TOGGLE
 
-  toggleCompleted = (idToggle) => {
-    this.setState((prevState) => ({
-      todosArr: prevState.todosArr.map((todo) =>
+  const toggleCompleted = (idToggle) => {
+    setTodosArr((prevTodos) =>
+      prevTodos.map((todo) =>
         todo.id === idToggle ? { ...todo, completed: !todo.completed } : todo
-      ),
-    }));
+      )
+    );
   };
 
   // FILTER
-  handlerFilter = (e) => {
-    this.setState({ filter: e.target.value });
-  };
-  onFilterTodo = () => {
-    const { todosArr, filter } = this.state;
+  const handlerFilter = (e) => setFilter(e.target.value);
+
+  const onFilterTodo = useMemo(() => {
     const normalize = filter.toLowerCase();
-    return todosArr.filter((item) =>
+    const finalArray = todosArr.filter((item) =>
       item.text.toLowerCase().includes(normalize)
     );
-  };
+    if (finalArray.length === 0 && filter !== "") {
+      toast.warn("Warning Notification !");
+    }
+    return finalArray;
+  }, [filter, todosArr]);
 
   // DELETE
 
-  deleteTodos = (idItem) => {
-    this.setState((prevState) => ({
-      todosArr: prevState.todosArr.filter(({ id }) => id !== idItem),
-    }));
-  };
+  const deleteTodos = (idItem) => setDeleteID(idItem);
 
-  render() {
-    const { todosArr, isOpenModalAdd } = this.state;
+  useEffect(() => {
+    if (deleteID === "") return;
+    setLoading(true);
+    api
+      .deleteTodo(API_ENDPOINT, deleteID)
+      .then((item) => {
+        setTodosArr((prevTodos) =>
+          prevTodos.filter(({ id }) => id !== deleteID)
+        );
+        toast.success("Завдання виконане і видалено 👌 !");
+        toast.info("Ти молодець 👊 !");
+      })
+      .catch((error) => {
+        toast.error("Завдання не видалено (: Спробуйте ще раз 🙌");
+        return error.message;
+      })
+      .finally(() => {
+        setDeleteID("");
+        setLoading(false);
+      });
+  }, [deleteID]);
 
-    const doneTodos = this.onCompleteTodos();
-    const filterTodos = this.onFilterTodo();
+  const doneTodos = onCompleteTodos();
+  // const filterTodos = onFilterTodo();
 
-    return (
-      <>
-        <Header length={todosArr.length} doneTodos={doneTodos} />
-        {!isOpenModalAdd && (
-          <PlusButton
-            text=" <<-- Ще одне завдання ...?"
-            openAddModal={this.openAddModal}
+  return (
+    <>
+      {loading && (
+        <div className={s.wrap}>
+          <HashLoader
+            color={color}
+            loading={loading}
+            cssOverride={override}
+            size={80}
           />
-        )}
-        {isOpenModalAdd && (
-          <Modal onCloseAddModal={this.closeAddModal}>
-            <TodoForm
-              name="name"
-              onAddToDo={this.addTodo}
-              onCloseAddModal={this.closeAddModal}
-            />
-          </Modal>
-        )}
+        </div>
+      )}
 
-        <TodoFilter onChange={this.handlerFilter} />
-        <TodoSList
-          todosArr={filterTodos}
-          onDeleteTodos={this.deleteTodos}
-          onToggle={this.toggleCompleted}
+      <Header length={todosArr.length} doneTodos={doneTodos} />
+      {!isOpenModalAdd && (
+        <PlusButton
+          text=" <<-- Ще одне завдання ...?"
+          openAddModal={openAddModal}
         />
+      )}
+      {isOpenModalAdd && (
+        <Modal onCloseAddModal={closeAddModal}>
+          <TodoForm
+            name="name"
+            onAddToDo={confirmTodo}
+            onCloseAddModal={closeAddModal}
+          />
+        </Modal>
+      )}
 
-        {/* <TodoForm name="name" onAddToDo={this.addTodo} /> */}
-      </>
-    );
-  }
-}
+      <TodoFilter onChange={handlerFilter} />
+      <TodoSList
+        todosArr={onFilterTodo}
+        onDeleteTodos={deleteTodos}
+        onToggle={toggleCompleted}
+      />
+    </>
+  );
+};
+
+Todos.propTypes = {
+  todosArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+    })
+  ),
+};
 
 export default Todos;

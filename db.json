@@ -1,0 +1,34 @@
+{
+  "todos": [
+    {
+      "completed": false,
+      "id": "id-Ob42uwRmh",
+      "text": "Learn English"
+    },
+    {
+      "completed": false,
+      "id": "id-OcnZ6O8T0",
+      "text": "Learn css"
+    },
+    {
+      "completed": false,
+      "id": "id-f5eMTdaLM",
+      "text": "Learn Angular"
+    },
+    {
+      "completed": false,
+      "id": "id--Xc28u7M1",
+      "text": "Learn Redux"
+    },
+    {
+      "completed": false,
+      "id": "id-rk2ZhxP3K",
+      "text": "Learn Redux"
+    },
+    {
+      "completed": false,
+      "id": "id-rLegbOZyB",
+      "text": "Learn React.Redux"
+    }
+  ]
+}
