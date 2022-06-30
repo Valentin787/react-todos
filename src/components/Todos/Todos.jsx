@@ -14,7 +14,7 @@ import s from "./Todos.module.css";
 
 var shortid = require("shortid");
 
-const override: CSSProperties = {
+const override = {
   display: "block",
   margin: "0 auto",
   borderColor: "#08f59a",
@@ -31,27 +31,6 @@ const Todos = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [color, setColor] = useState("#14da8e");
-
-  // COMPONENT/DID/MOUNT
-
-  // useEffect(() => {
-  //   const todos = localStorage.getItem("todos");
-  //   const parseTodos = JSON.parse(todos);
-
-  //   if (parseTodos) {
-  //     setTodosArr(parseTodos);
-  //   }
-  // }, [])
-
-  // COMPONENT/DID/UPDATE
-
-  // useEffect(() => {
-  //   console.log(!todosArr);
-  //   if (!todosArr) return;
-
-  //   localStorage.setItem("todos", JSON.stringify(todosArr));
-
-  // }, [todosArr])
 
   useEffect(() => {
     setError(null);
@@ -71,11 +50,6 @@ const Todos = () => {
 
   // ADD TODO
 
-  // const confirmTodo = useCallback((todo) => {
-  //  console.log(`useCallback`,todo);
-  //   setNewTodo(todo)
-  // }, []);
-  // console.log(newTodo);
   const confirmTodo = (todo) => setNewTodo(todo);
 
   useEffect(() => {
